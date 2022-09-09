@@ -6,7 +6,7 @@ this script allows you to parse data
 
 Start docker services:
     ```
-    docker-compose up -d
+    docker-compose up --exit-code-from main
     ```
 
 Create dump file:

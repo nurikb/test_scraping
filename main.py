@@ -46,8 +46,7 @@ async def get_page_data(session, page=None):
         soup = BeautifulSoup(response_data, "lxml")
         items_div = soup.find_all("div", class_="clearfix")
         if len(items_div) == 0:
-            print(page)
-
+            extra_tasks.append(page)
         for item in items_div[1:]:
             item_image = item.find("div", class_="image").find("img")
 
@@ -94,7 +93,6 @@ async def get_page_count(extra_data=None):
     url = "https://www.kijiji.ca/b-apartments-condos/city-of-toronto/c37l1700273"
     ua = UserAgent()
     headers = {
-        "Accept": '*/*',
         "User-Agent": ua.random
     }
     async with aiohttp.ClientSession() as session:
