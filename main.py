@@ -1,4 +1,3 @@
-import time
 from datetime import datetime
 import re
 from math import ceil
@@ -105,12 +104,14 @@ async def get_page_count(extra_data=None):
             tasks.append(task)
             page_count = ceil(result_count / 45)
             page_range = range(2, page_count + 1)
+            print("Please wait...")
         else:
             page_range = extra_data
 
         for page in page_range:
             task = asyncio.create_task(get_page_data(session, page))
             tasks.append(task)
+            await asyncio.sleep(0.1)
 
         await asyncio.gather(*tasks)
 
@@ -122,6 +123,8 @@ def main():
     if extra_tasks:
         asyncio.run(get_page_count(extra_tasks))
     with db.atomic():
+        print(len(data), 'rows')
+        print('finish!')
         for index in range(0, len(data), 50):
             Info.insert_many(data[index:index + 50]).execute()
     if not db.is_closed():
