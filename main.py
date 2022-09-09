@@ -122,7 +122,6 @@ def main():
     db.create_tables([Info])
     asyncio.run(get_page_count())
     if extra_tasks:
-        time.sleep(15)
         asyncio.run(get_page_count(extra_tasks))
     with db.atomic():
         for index in range(0, len(data), 50):
