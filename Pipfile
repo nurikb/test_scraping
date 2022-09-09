@@ -9,6 +9,8 @@ aiohttp = "*"
 peewee = "*"
 beautifulsoup4 = "*"
 fake-useragent = "*"
+psycopg2-binary = "*"
+lxml = "*"
 
 [dev-packages]
 

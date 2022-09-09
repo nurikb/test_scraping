@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+
+  db:
+    image: postgres:12.1-alpine
+    container_name: db
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASS=postgres
+      - POSTGRES_DBNAME=postgres
+    restart: "on-failure"
+
+  main:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: main
+    command: bash -c "python main.py"
+    volumes:
+      - .:/world
+    restart: "on-failure"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

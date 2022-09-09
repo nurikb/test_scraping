@@ -8,7 +8,7 @@ from peewee import *
 import asyncio
 import aiohttp
 
-db = PostgresqlDatabase(database='postgres', user='postgres', password='psql', host='localhost')
+db = PostgresqlDatabase(database='postgres', user='postgres', password='postgres', host='db')
 
 
 class Info(Model):
@@ -26,7 +26,6 @@ class Info(Model):
 
 
 data = []
-ua = UserAgent()
 extra_tasks = []
 
 
@@ -35,6 +34,7 @@ async def get_page_data(session, page=None):
         url = f"https://www.kijiji.ca/b-apartments-condos/city-of-toronto/page-{page}/c37l1700273"
     else:
         url = "https://www.kijiji.ca/b-apartments-condos/city-of-toronto/c37l1700273"
+    ua = UserAgent()
     headers = {
         "Accept": '*/*',
         "User-Agent": ua.random
@@ -92,6 +92,7 @@ async def get_page_data(session, page=None):
 
 async def get_page_count(extra_data=None):
     url = "https://www.kijiji.ca/b-apartments-condos/city-of-toronto/c37l1700273"
+    ua = UserAgent()
     headers = {
         "Accept": '*/*',
         "User-Agent": ua.random
@@ -119,7 +120,6 @@ async def get_page_count(extra_data=None):
 def main():
     db.connect()
     db.create_tables([Info])
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     asyncio.run(get_page_count())
     if extra_tasks:
         time.sleep(15)
